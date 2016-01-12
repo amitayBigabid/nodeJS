@@ -1,16 +1,28 @@
+var express = require('express');
+var app = express();
 
-/* Hello, World! program in node.js */
+app.use(express.static('public'));
 
-var http = require("http")
-http.createServer(function (request,response) {
-	// body...
-	// Send the HTTP header 
-    // HTTP Status: 200 : OK
-    // Content Type: text/plain
-	response.writeHead(200,{'Content-Type': 'text/plain'});
-	// Send the response body as "Hello World"
-    response.end('Hello World\n');
+app.get('/index1.htm', function (req, res) {
+   res.sendFile( __dirname + "/" + "index1.htm" );
+})
 
-}).listen(8082);
-console.log('Server running at http://127.0.0.1:8082/');
-//console.log("Hello, World!")
+app.get('/process_get', function (req, res) {
+
+   // Prepare output in JSON format
+   response = {
+       first_name:req.query.first_name,
+       last_name:req.query.last_name
+   };
+   console.log(response);
+   res.end(JSON.stringify(response));
+})
+
+var server = app.listen(8081, function () {
+
+  var host = server.address().address
+  var port = server.address().port
+
+  console.log("Example app listening at http://%s:%s", host, port)
+
+})
